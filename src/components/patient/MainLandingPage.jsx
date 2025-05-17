@@ -1,6 +1,6 @@
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import EMPTYTABLE from "../assets/emptyTable.svg";
+import EMPTYTABLE from "../../assets/emptyTable.svg";
 import AddPatientModal from "./AddPatientModal";
 import { getDb } from "./dbService";
 import TablePatient from "./TablePatient";
@@ -10,6 +10,7 @@ const MainLandingPage = () => {
   const [patients, setPatients] = useState([]);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [loading, setLoading] = useState(true);
+ 
   const handleModal = () => {
     setOpenAddModal((prev) => !prev);
   };
@@ -40,7 +41,6 @@ const MainLandingPage = () => {
     }
   };
 
-  console.log("patients", patients);
 
   return (
     <>
@@ -103,7 +103,7 @@ const MainLandingPage = () => {
             </Box>
           ) : (
             <Box marginTop={"24px"}>
-              <TablePatient data={patients} />
+              <TablePatient data={patients} getPatientData={getPatientData}/>
             </Box>
           )}
         </Box>

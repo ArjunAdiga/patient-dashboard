@@ -10,11 +10,11 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import React from "react";
-import closeIcon from "../assets/closeIcon.svg";
+import React, { useEffect } from "react";
+import closeIcon from "../../assets/closeIcon.svg";
 import { getDb } from "./dbService";
 
-const AddPatientModal = ({ open, onClose, getPatientData }) => {
+const AddPatientModal = ({ open, onClose, getPatientData, item, edit }) => {
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [formData, setFormData] = React.useState({
     name: "",
@@ -22,6 +22,17 @@ const AddPatientModal = ({ open, onClose, getPatientData }) => {
     gender: "",
     ailment: "",
   });
+
+  useEffect(() => {
+    if (item && edit) {
+      setFormData((prev) => ({
+        name: item?.name,
+        gender: item?.gender,
+        age: item?.age?.toString(),
+        ailment: item?.ailment,
+      }));
+    }
+  }, [item]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,13 +43,26 @@ const AddPatientModal = ({ open, onClose, getPatientData }) => {
     try {
       const db = await getDb();
       const { name, age, gender, ailment } = formData;
-      await db.exec(`
-    INSERT INTO patientsDB (name,age,gender,ailment)
-    VALUES ('${name}', ${parseInt(age)}, '${gender}', '${ailment}');
-    `);
-      getPatientData();
-      onClose();
-      setFormData({});
+      if (edit) {
+        await db.exec(`
+        UPDATE patientsDB
+        SET name = '${name}', gender='${gender}', age=${parseInt(
+          age
+        )}, ailment='${ailment}'
+        WHERE id = ${item?.id};
+        `);
+        getPatientData();
+        onClose();
+        setFormData({});
+      } else {
+        await db.exec(`
+      INSERT INTO patientsDB (name,age,gender,ailment)
+      VALUES ('${name}', ${parseInt(age)}, '${gender}', '${ailment}');
+      `);
+        getPatientData();
+        onClose();
+        setFormData({});
+      }
     } catch (err) {
       console.error("failed to add patient", err);
     }
@@ -52,7 +76,10 @@ const AddPatientModal = ({ open, onClose, getPatientData }) => {
           flexDirection="column"
           width={isMobile ? "300px" : "436px"}
           padding={"24px 12px"}
-          sx={{ borderRadius: "8px",boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)" }}
+          sx={{
+            borderRadius: "8px",
+            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+          }}
         >
           <Box
             display="flex"
@@ -98,15 +125,16 @@ const AddPatientModal = ({ open, onClose, getPatientData }) => {
                 name="name"
                 variant="outlined"
                 onChange={handleChange}
+                value={edit && formData?.name}
+                InputLabelProps={{ shrink: true }}
                 required
                 sx={{
                   "& .MuiInputBase-root": {
                     height: "44px",
                   },
-                  "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      color: "red",
-                    },
+                  "& .MuiInputLabel-asterisk": {
+                    color: "#DE1135",
+                  },
                 }}
               />
               <TextField
@@ -114,21 +142,30 @@ const AddPatientModal = ({ open, onClose, getPatientData }) => {
                 label="Age"
                 name="age"
                 variant="outlined"
+                type="number"
                 onChange={handleChange}
+                value={edit && formData?.age}
+                InputLabelProps={{ shrink: true }}
                 required
                 sx={{
                   "& .MuiInputBase-root": {
                     height: "44px",
                   },
+                  "& .MuiInputLabel-asterisk": {
+                    color: "#DE1135",
+                  },
                 }}
               />
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                <InputLabel id="demo-simple-select-label">
+                  <Box display="flex" flexDirection="row" gap="2px">
+                    Gender <Typography sx={{ color: "#DE1135" }}>*</Typography>
+                  </Box>
+                </InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
                   value={formData?.gender}
-                  required
                   label="Gender"
                   name="gender"
                   onChange={handleChange}
@@ -139,6 +176,9 @@ const AddPatientModal = ({ open, onClose, getPatientData }) => {
                       alignItems: "center",
                       height: "44px",
                       padding: "0 14px",
+                    },
+                    "& .MuiInputLabel-asterisk": {
+                      color: "#DE1135",
                     },
                   }}
                 >
@@ -151,6 +191,8 @@ const AddPatientModal = ({ open, onClose, getPatientData }) => {
                 label="Ailment"
                 variant="outlined"
                 onChange={handleChange}
+                value={edit && formData?.ailment}
+                InputLabelProps={{ shrink: true }}
                 name="ailment"
                 sx={{
                   "& .MuiInputBase-root": {
@@ -172,6 +214,12 @@ const AddPatientModal = ({ open, onClose, getPatientData }) => {
                   onClick={() => {
                     onSubmit();
                   }}
+                  disabled={
+                    formData?.name?.trim() === "" ||
+                    formData?.age === "" ||
+                    formData?.age == undefined ||
+                    formData?.gender?.length < 1
+                  }
                   size="medium"
                   sx={{ backgroundColor: "#a3b18a" }}
                 >
