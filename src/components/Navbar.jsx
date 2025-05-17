@@ -9,6 +9,7 @@ import Menu from "@mui/material/Menu";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
+import hamBurger from "../assets/hamburger.png"
 
 const pages = [
   { label: "Dashboard", path: "/" },
@@ -37,7 +38,7 @@ const Navbar = () => {
                 onClick={handleOpenNavMenu}
                 color="inherit"
               >
-                <img src="https://cdn.iconscout.com/icon/free/png-256/free-hamburger-menu-icon-download-in-svg-png-gif-file-formats--crispy-user-interface-pack-icons-462145.png?f=webp&w=256" width={32} height={32} alt="menu" />
+                <img src={hamBurger} width={32} height={32} alt="menu" />
               </IconButton>
               <Menu
                 id="menu-appbar"
@@ -62,7 +63,7 @@ const Navbar = () => {
                       to={page.path}
                       sx={{
                         textDecoration: "none",
-                        color: "#dad7cd",
+                        color: "#415d43",
                       }}
                     >
                       {page.label}
