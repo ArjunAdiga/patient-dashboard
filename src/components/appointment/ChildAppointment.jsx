@@ -5,13 +5,7 @@ import { getDb } from "../dbService";
 
 const ChildAppointment = ({ item, getPatientData }) => {
     const [openPaper, setOpenPaper] = useState(false);
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [openAddModal, setOpenAddModal] = useState(false);
-  
-    const handleModal = () => {
-      setOpenAddModal((prev) => !prev);
-    };
-  
+    const [anchorEl, setAnchorEl] = useState(null); 
     const handlepaperOpen = (event) => {
       setAnchorEl(event.currentTarget);
       setOpenPaper(true);
