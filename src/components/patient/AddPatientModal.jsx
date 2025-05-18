@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import React, { useEffect } from "react";
 import closeIcon from "../../assets/closeIcon.svg";
-import { getDb } from "./dbService";
+import { getDb } from "../dbService";
 
 const AddPatientModal = ({ open, onClose, getPatientData, item, edit }) => {
   const isMobile = useMediaQuery("(max-width: 600px)");
@@ -126,7 +126,9 @@ const AddPatientModal = ({ open, onClose, getPatientData, item, edit }) => {
                 variant="outlined"
                 onChange={handleChange}
                 value={edit && formData?.name}
-                InputLabelProps={{ shrink: true }}
+                InputLabelProps={{
+                  shrink: edit && (formData?.name?.length > 0 ? true : false),
+                }}
                 required
                 sx={{
                   "& .MuiInputBase-root": {
@@ -145,7 +147,9 @@ const AddPatientModal = ({ open, onClose, getPatientData, item, edit }) => {
                 type="number"
                 onChange={handleChange}
                 value={edit && formData?.age}
-                InputLabelProps={{ shrink: true }}
+                InputLabelProps={{
+                  shrink: edit && (formData?.age > 0 ? true : false),
+                }}
                 required
                 sx={{
                   "& .MuiInputBase-root": {
@@ -192,7 +196,10 @@ const AddPatientModal = ({ open, onClose, getPatientData, item, edit }) => {
                 variant="outlined"
                 onChange={handleChange}
                 value={edit && formData?.ailment}
-                InputLabelProps={{ shrink: true }}
+                InputLabelProps={{
+                  shrink:
+                    edit && (formData?.ailment?.length > 0 ? true : false),
+                }}
                 name="ailment"
                 sx={{
                   "& .MuiInputBase-root": {

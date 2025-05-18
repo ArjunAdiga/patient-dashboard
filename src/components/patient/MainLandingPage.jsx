@@ -2,7 +2,7 @@ import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import EMPTYTABLE from "../../assets/emptyTable.svg";
 import AddPatientModal from "./AddPatientModal";
-import { getDb } from "./dbService";
+import { getDb } from "../dbService";
 import TablePatient from "./TablePatient";
 
 const MainLandingPage = () => {

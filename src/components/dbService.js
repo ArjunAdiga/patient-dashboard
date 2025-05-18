@@ -2,6 +2,7 @@ import { PGlite } from '@electric-sql/pglite';
 
 let dbInstance = null;
 
+
 export async function getDb() {
     if (!dbInstance) {
       try {
@@ -16,7 +17,18 @@ export async function getDb() {
             ailment TEXT
           );
         `);       
-        console.log("Db initialized successfully");
+
+        await dbInstance.exec(`
+        CREATE TABLE IF NOT EXISTS AppointmentDB(
+          id SERIAL PRIMARY KEY,
+          patient_id INTEGER,
+          patient_name TEXT,
+          dept TEXT,
+          dName TEXT,
+          description TEXT,
+          FOREIGN KEY (patient_id) REFERENCES patientsDB(id)
+        );
+        `)
       } catch (error) {
         console.error("Database initialization error:", error);
         throw error; 
@@ -24,3 +36,5 @@ export async function getDb() {
     }
     return dbInstance;
   }
+
+  

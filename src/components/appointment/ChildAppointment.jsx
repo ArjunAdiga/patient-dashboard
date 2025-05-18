@@ -1,41 +1,32 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Paper,
-  Popover,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, Paper, Popover, Typography } from "@mui/material";
 import React, { useState } from "react";
 import ellipsis from "../../assets/ellipsis.png";
-import AddPatientModal from "./AddPatientModal";
 import { getDb } from "../dbService";
 
-const ChildDataPatient = ({ item ,getPatientData}) => {
-  const [openPaper, setOpenPaper] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [openAddModal, setOpenAddModal] = useState(false);
-
-  const handleModal = () => {
-    setOpenAddModal((prev) => !prev);
-  };
-
-  const handlepaperOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-    setOpenPaper(true);
-  };
-  const handlepaperClose = () => {
-    setOpenPaper(false);
-    setAnchorEl(null);
-  };
-
-  const onDelete = async(id) => {
-    const db = await getDb();
-    await db.exec(`
-    DELETE from patientsDB WHERE id=${id}
-    `);
-    getPatientData();
-  }
+const ChildAppointment = ({ item, getPatientData }) => {
+    const [openPaper, setOpenPaper] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [openAddModal, setOpenAddModal] = useState(false);
+  
+    const handleModal = () => {
+      setOpenAddModal((prev) => !prev);
+    };
+  
+    const handlepaperOpen = (event) => {
+      setAnchorEl(event.currentTarget);
+      setOpenPaper(true);
+    };
+    const handlepaperClose = () => {
+      setOpenPaper(false);
+      setAnchorEl(null);
+    };
+    const onDelete = async(id) => {
+        const db = await getDb();
+        await db.exec(`
+        DELETE from AppointmentDB WHERE id=${id}
+        `);
+        getPatientData();
+      }
   return (
     <>
       <Box
@@ -57,31 +48,31 @@ const ChildDataPatient = ({ item ,getPatientData}) => {
           <Typography
             sx={{ color: "#3D465A", fontSize: "14px", fontWeight: 400 }}
           >
-            {item?.name}
+            {item?.patient_name}
           </Typography>
         </Box>
-        <Box width="10%">
+        <Box width="20%">
           <Typography
             sx={{ color: "#3D465A", fontSize: "14px", fontWeight: 400 }}
           >
-            {item?.age}
+            {item?.dept}
           </Typography>
         </Box>
-        <Box width="10%">
+        <Box width="15%">
           <Typography
             sx={{ color: "#3D465A", fontSize: "14px", fontWeight: 400 }}
           >
-            {item?.gender}
+            {`Dr ${item?.dname}`}
           </Typography>
         </Box>
-        <Box width="30%">
+        <Box width="20%">
           <Typography
             sx={{ color: "#3D465A", fontSize: "14px", fontWeight: 400 }}
           >
-            {item?.ailment || "-"}
+            {item?.description || "-"}
           </Typography>
         </Box>
-        <Box width="10%">
+        <Box width="5%">
           <Button onClick={handlepaperOpen}>
             <img src={ellipsis} alt="actions" width={16} height={16} />
           </Button>
@@ -106,12 +97,6 @@ const ChildDataPatient = ({ item ,getPatientData}) => {
           <Box padding="12px" display="flex" flexDirection="column" gap="8px">
             <Typography
               sx={{ cursor: "pointer", color: "#3D465A", fontSize: "14px" }}
-              onClick={() => {handleModal();handlepaperClose()}}
-            >
-              Edit
-            </Typography>
-            <Typography
-              sx={{ cursor: "pointer", color: "#3D465A", fontSize: "14px" }}
               onClick={() => onDelete(item?.id)}
             >
               Delete
@@ -119,17 +104,8 @@ const ChildDataPatient = ({ item ,getPatientData}) => {
           </Box>
         </Paper>
       </Popover>
-      {openAddModal && (
-        <AddPatientModal
-          open={openAddModal}
-          onClose={handleModal}
-          getPatientData={getPatientData}
-          item={item}
-          edit={true}
-        />
-      )}
     </>
   );
 };
 
-export default ChildDataPatient;
+export default ChildAppointment;
