@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { getDb } from "../dbService";
 
-const AddApointmentModal = ({ open, onClose,getPatientData }) => {
+const AddApointmentModal = ({ open, onClose, getPatientData }) => {
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [patientArray, setPatientArray] = useState([]);
   const [patientName, setPatientName] = useState([]);
@@ -51,8 +51,6 @@ const AddApointmentModal = ({ open, onClose,getPatientData }) => {
           ]);
     }
   }, [formData?.dept]);
-
- 
 
   const getPatient = async (dbInstance = db) => {
     if (!dbInstance) return;
@@ -93,21 +91,19 @@ const AddApointmentModal = ({ open, onClose,getPatientData }) => {
 
   const onSubmit = async (e) => {
     try {
-      const db= await getDb();
+      const db = await getDb();
       const { patient_id, dept, dName, description } = formData;
       const pName = patientName?.find((item) => item?.id === patient_id);
       await db.exec(`
         INSERT INTO AppointmentDB (patient_id, patient_name, dept, dName, description)
         VALUES (${patient_id}, '${pName?.name}', '${dept}', '${dName}', '${description}');
-        `)
-        onClose();
-        setFormData({});
-        getPatientData()
-    }
-    catch (err) {
+        `);
+      onClose();
+      setFormData({});
+      getPatientData();
+    } catch (err) {
       console.error("failed to add patient", err);
     }
-    
   };
   return (
     <Dialog open={open} onClose={onClose}>
@@ -160,7 +156,14 @@ const AddApointmentModal = ({ open, onClose,getPatientData }) => {
         <form onSubmit={(e) => onSubmit()}>
           <Box display="flex" flexDirection="column" gap="12px">
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
+              <InputLabel
+                id="demo-simple-select-label"
+                sx={{
+                  "&.Mui-focused": {
+                    color: "#a3b18a",
+                  },
+                }}
+              >
                 <Box display="flex" flexDirection="row" gap="2px">
                   Patient name{" "}
                   <Typography sx={{ color: "#DE1135" }}>*</Typography>
@@ -184,6 +187,9 @@ const AddApointmentModal = ({ open, onClose,getPatientData }) => {
                   "& .MuiInputLabel-asterisk": {
                     color: "#DE1135",
                   },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#a3b18a",
+                  },
                 }}
               >
                 {patientName?.map((item) => (
@@ -193,7 +199,14 @@ const AddApointmentModal = ({ open, onClose,getPatientData }) => {
             </FormControl>
 
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
+              <InputLabel
+                id="demo-simple-select-label"
+                sx={{
+                  "&.Mui-focused": {
+                    color: "#a3b18a",
+                  },
+                }}
+              >
                 <Box display="flex" flexDirection="row" gap="2px">
                   Department{" "}
                   <Typography sx={{ color: "#DE1135" }}>*</Typography>
@@ -217,6 +230,9 @@ const AddApointmentModal = ({ open, onClose,getPatientData }) => {
                   "& .MuiInputLabel-asterisk": {
                     color: "#DE1135",
                   },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#a3b18a",
+                  },
                 }}
               >
                 {deptArray?.map((item) => (
@@ -226,7 +242,14 @@ const AddApointmentModal = ({ open, onClose,getPatientData }) => {
             </FormControl>
 
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">
+              <InputLabel
+                id="demo-simple-select-label"
+                sx={{
+                  "&.Mui-focused": {
+                    color: "#a3b18a",
+                  },
+                }}
+              >
                 <Box display="flex" flexDirection="row" gap="2px">
                   Doctor name{" "}
                   <Typography sx={{ color: "#DE1135" }}>*</Typography>
@@ -251,6 +274,9 @@ const AddApointmentModal = ({ open, onClose,getPatientData }) => {
                   "& .MuiInputLabel-asterisk": {
                     color: "#DE1135",
                   },
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "#a3b18a",
+                  },
                 }}
               >
                 {doc?.map((item) => (
@@ -269,7 +295,19 @@ const AddApointmentModal = ({ open, onClose,getPatientData }) => {
                 "& .MuiInputBase-root": {
                   height: "44px",
                 },
+                "& .MuiInputLabel-root": {
+                  lineHeight: "1",
+                },
+                "& .MuiOutlinedInput-root": {
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#a3b18a",
+                  },
+                },
+                "& label.Mui-focused": {
+                  color: "#a3b18a",
+                },
               }}
+              multiline={4}
             />
             <Box
               display="flex"
@@ -277,8 +315,13 @@ const AddApointmentModal = ({ open, onClose,getPatientData }) => {
               justifyContent="end"
               gap="24px"
             >
-              <Button variant="outlined" onClick={onClose} size="medium">
-                cancel
+              <Button
+                variant="text"
+                onClick={onClose}
+                size="medium"
+                sx={{ color: "#a3b18a" }}
+              >
+                Cancel
               </Button>
               <Button
                 variant="contained"

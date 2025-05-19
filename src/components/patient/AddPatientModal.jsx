@@ -137,6 +137,17 @@ const AddPatientModal = ({ open, onClose, getPatientData, item, edit }) => {
                   "& .MuiInputLabel-asterisk": {
                     color: "#DE1135",
                   },
+                  "& .MuiInputLabel-root": {
+                    lineHeight: "1",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#a3b18a", 
+                    },
+                  },
+                  "& label.Mui-focused": {
+                    color: "#a3b18a", 
+                  },
                 }}
               />
               <TextField
@@ -158,10 +169,28 @@ const AddPatientModal = ({ open, onClose, getPatientData, item, edit }) => {
                   "& .MuiInputLabel-asterisk": {
                     color: "#DE1135",
                   },
+                  "& .MuiInputLabel-root": {
+                    lineHeight: "1",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#a3b18a", 
+                    },
+                  },
+                  "& label.Mui-focused": {
+                    color: "#a3b18a", 
+                  },
                 }}
               />
               <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
+                <InputLabel
+                  id="demo-simple-select-label"
+                  sx={{
+                    "&.Mui-focused": {
+                      color: "#a3b18a",
+                    },
+                  }}
+                >
                   <Box display="flex" flexDirection="row" gap="2px">
                     Gender <Typography sx={{ color: "#DE1135" }}>*</Typography>
                   </Box>
@@ -184,6 +213,9 @@ const AddPatientModal = ({ open, onClose, getPatientData, item, edit }) => {
                     "& .MuiInputLabel-asterisk": {
                       color: "#DE1135",
                     },
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "#a3b18a",
+                    },
                   }}
                 >
                   <MenuItem value={"male"}>Male</MenuItem>
@@ -205,6 +237,17 @@ const AddPatientModal = ({ open, onClose, getPatientData, item, edit }) => {
                   "& .MuiInputBase-root": {
                     height: "44px",
                   },
+                  "& .MuiInputLabel-root": {
+                    lineHeight: "1",
+                  },
+                  "& .MuiOutlinedInput-root": {
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#a3b18a",
+                    },
+                  },
+                  "& label.Mui-focused": {
+                    color: "#a3b18a", 
+                  },
                 }}
               />
               <Box
@@ -213,8 +256,13 @@ const AddPatientModal = ({ open, onClose, getPatientData, item, edit }) => {
                 justifyContent="end"
                 gap="24px"
               >
-                <Button variant="outlined" onClick={onClose} size="medium">
-                  cancel
+                <Button
+                  variant="text"
+                  onClick={onClose}
+                  size="medium"
+                  sx={{ color: "#a3b18a" }}
+                >
+                  Cancel
                 </Button>
                 <Button
                   variant="contained"
